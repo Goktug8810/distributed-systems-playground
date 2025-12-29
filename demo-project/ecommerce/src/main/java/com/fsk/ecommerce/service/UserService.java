@@ -5,7 +5,7 @@ import com.fsk.ecommerce.mapper.dto.UserDTO;
 import com.fsk.ecommerce.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -16,9 +16,9 @@ public class UserService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
 
-    @GetMapping("/users/get-all-users")
+    @Transactional(readOnly = true)
     public List<UserDTO> userDTOList() {
-        return userRepository.findAll().stream().map(userMapper::userDto).toList();
+        return userRepository.findAllUserDetails().stream().map(userMapper::toDTO).toList();
     }
 
 }
